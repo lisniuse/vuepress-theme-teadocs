@@ -100,7 +100,8 @@ $navbar-horizontal-padding = 1.5rem
      clear both        
      visibility hidden
     .home-link
-      line-height $navbarHeight - 0.4rem
+      height 100%
+      line-height $navbarHeight
       margin-right 1rem
       float left
   a, span, img
@@ -111,6 +112,7 @@ $navbar-horizontal-padding = 1.5rem
     margin-right 0.8rem
     vertical-align top
   .site-name
+    height 100%
     font-size 1.3rem
     font-weight 600
     color $textColor

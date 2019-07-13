@@ -121,16 +121,33 @@ export default {
 .nav-links
   display block
   height 100%
-  a
-    height 100%
-    line-height 1.4rem
-    display block !important
-    box-sizing border-box
-    line-height $navbarHeight - 0.5rem
-    color inherit
-    border-top 2px solid transparent
-    &:hover, &.router-link-active
-      color $accentColor
+  .nav-item
+    > a:not(.repo-link), .dropdown-title
+      height 100%
+      display block !important
+      box-sizing border-box
+      line-height $navbarHeight !important
+      color inherit
+      // border-top 2px solid transparent
+      -webkit-transition all .2s ease
+      transition all .2s ease
+      &:hover, &.router-link-active
+        color $accentColor
+        &:after
+          width 40% !important
+      &:after
+        content ""
+        display block
+        position absolute
+        width 0
+        left 50%
+        -webkit-transform translate(-50%)
+        transform translate(-50%)
+        height 3px
+        border-radius 0 0 2px 2px
+        background $accentColor
+        top -1px
+        transition all .2s ease
   .nav-item
     height 100%
     position relative
@@ -143,13 +160,13 @@ export default {
       margin-left 0
   .repo-link
     position relative
-    line-height $navbarHeight
+    line-height $navbarHeight + 0.3rem
     display inline !important
     border-radius 20px
     padding 5px
     padding-left 10px
     padding-right 10px
-    color #ffffff
+    color #ffffff !important
     background-color $accentColor
     transition all .2s ease
     border none
@@ -157,7 +174,7 @@ export default {
       border none
       background-color #ffffff !important
       box-shadow 0 2px 4px rgba(0,0,0,0.12)
-      color $textColor
+      color $textColor !important
       svg
         color $textColor
     .text
@@ -178,7 +195,7 @@ export default {
 @media (min-width: $MQMobile)
   .nav-links a
     &:hover, &.router-link-active
-      color $textColor
+      color $accentColor
   .nav-item > a:not(.external)
     &:hover, &.router-link-active
       margin-bottom 0px

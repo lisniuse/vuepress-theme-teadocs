@@ -108,6 +108,7 @@ export default {
         font-weight 400
         margin-bottom 0
         padding 0 1.5rem 0 1.25rem
+        color $textColor
         &:hover
           color $accentColor
         &.router-link-active
