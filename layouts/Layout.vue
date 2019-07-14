@@ -9,7 +9,7 @@
       v-if="shouldShowNavbar"
       @toggle-sidebar="toggleSidebar"
     />
-
+ 
     <div
       class="sidebar-mask"
       @click="toggleSidebar(false)"
@@ -21,10 +21,10 @@
 
       <div class="search-layout">
         <AlgoliaSearchBox
-          v-if="isAlgoliaSearch"
+          v-if="isAlgoliaSearch && linksWrapMaxWidth"
           :options="algolia"
         />
-        <SearchBox v-else-if="$site.themeConfig.search !== false && $page.frontmatter.search !== false"/>
+        <SearchBox v-else-if="$site.themeConfig.search !== false && $page.frontmatter.search !== false && linksWrapMaxWidth"/>
       </div>
       
       <Sidebar
@@ -70,17 +70,24 @@ import SearchBox from '@SearchBox'
 import { resolveSidebarItems } from '../util'
 
 export default {
-  components: { Home, Page, Sidebar, Navbar,
+  components: { 
+    Home,
+    Page,
+    Sidebar,
+    Navbar,
     AlgoliaSearchBox,
-    SearchBox },
+    SearchBox
+  },
 
   data () {
     return {
+      linksWrapMaxWidth: null,
       isSidebarOpen: false
     }
   },
 
   computed: {
+
     shouldShowNavbar () {
       const { themeConfig } = this.$site
       const { frontmatter } = this.$page
@@ -141,10 +148,25 @@ export default {
   mounted () {
     this.$router.afterEach(() => {
       this.isSidebarOpen = false
-    })
+    });
+    this.bindSizeChange();
   },
 
   methods: {
+
+    bindSizeChange() {
+      const MOBILE_DESKTOP_BREAKPOINT = 719 // refer to config.styl
+      const handleLinksWrapWidth = () => {
+        if (document.documentElement.clientWidth < MOBILE_DESKTOP_BREAKPOINT) {
+          this.linksWrapMaxWidth = null;
+        } else {
+          this.linksWrapMaxWidth = document.documentElement.clientWidth;
+        }
+      }
+      handleLinksWrapWidth()
+      window.addEventListener('resize', handleLinksWrapWidth, false)
+    },
+
     toggleSidebar (to) {
       this.isSidebarOpen = typeof to === 'boolean' ? to : !this.isSidebarOpen
     },

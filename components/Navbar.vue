@@ -27,6 +27,11 @@
           'max-width': linksWrapMaxWidth + 'px'
         } : {}"
       >
+        <AlgoliaSearchBox
+          v-if="isAlgoliaSearch && !linksWrapMaxWidth"
+          :options="algolia"
+        />
+        <SearchBox v-else-if="$site.themeConfig.search !== false && $page.frontmatter.search !== false && !linksWrapMaxWidth"/>
         <NavLinks class="can-hide"/>
       </div>
     </div>
@@ -138,5 +143,13 @@ $navbar-horizontal-padding = 1.5rem
     .can-hide
       display none
     .links
-      padding-left 1.5rem
+      position relative
+      float right
+      top 0
+      .search-box
+        padding-left 1rem
+        background-color: #ffffff
+        position absolute
+        right: 0
+        top 0.7rem
 </style>
