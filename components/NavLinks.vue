@@ -160,7 +160,7 @@ export default {
       margin-left 0
   .repo-link
     position relative
-    line-height $navbarHeight + 0.3rem
+    line-height $navbarHeight + 0.1rem
     display inline !important
     border-radius 20px
     padding 5px
