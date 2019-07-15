@@ -126,7 +126,7 @@ export default {
       height 100%
       display block !important
       box-sizing border-box
-      line-height $navbarHeight !important
+      line-height $navbarHeight
       color inherit
       // border-top 2px solid transparent
       -webkit-transition all .2s ease
@@ -189,6 +189,17 @@ export default {
 
 @media (max-width: $MQMobile)
   .nav-links
+    .repo-link
+      background-color #ffffff
+      color $textColor !important
+      padding 0 !important
+      font-size 1.1em !important
+      svg
+        color #aaa
+    a
+      line-height 1.4rem !important
+      &:after
+        display none !important
     .nav-item, .repo-link
       margin-left 0
 

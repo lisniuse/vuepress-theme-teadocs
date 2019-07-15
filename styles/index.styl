@@ -60,8 +60,10 @@ body
     width 8px
     cursor pointer
   &::-webkit-scrollbar-thumb
-    background-color #3eaf7c
-    border-radius: 30px;
+    background-color rgba(203, 203, 203, 0.13)
+    border-radius 30px
+    &:hover
+      background-color #42b983
 
 {$contentClass}:not(.custom)
   @extend $wrapper

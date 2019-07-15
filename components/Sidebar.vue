@@ -1,5 +1,5 @@
 <template>
-  <aside class="sidebar" :class="{'cursor': cursor === true}" @mouseenter="cursor=true" @mouseleave="cursor=false">
+  <aside class="sidebar" :class="{'cursor': cursor === true || !linksWrapMaxWidth}" @mouseenter="cursor=true" @mouseleave="cursor=false">
     <NavLinks/>
     <slot name="top"/>
     <SidebarLinks :depth="0" :items="items"/>
@@ -23,9 +23,29 @@ export default {
 
   data() {
     return {
+      linksWrapMaxWidth: null,
       cursor: false
     }
-  }
+  },
+
+  mounted() {
+    this.bindSizeChange();
+  },
+
+  methods: {
+    bindSizeChange() {
+      const MOBILE_DESKTOP_BREAKPOINT = 719 // refer to config.styl
+      const handleLinksWrapWidth = () => {
+        if (document.documentElement.clientWidth < MOBILE_DESKTOP_BREAKPOINT) {
+          this.linksWrapMaxWidth = null;
+        } else {
+          this.linksWrapMaxWidth = document.documentElement.clientWidth;
+        }
+      }
+      handleLinksWrapWidth()
+      window.addEventListener('resize', handleLinksWrapWidth, false)
+    },
+  },
 
 }
 </script>
@@ -62,6 +82,15 @@ export default {
   .sidebar
     .nav-links
       display block
+      border-bottom 1px solid #eaecef
+      padding .5rem 0 .75rem
+      height auto
+      .nav-item
+        display block
+        float none
+        line-height 1.25rem
+        font-size 1.1em
+        padding .5rem 0 .5rem 1.5rem
       .dropdown-wrapper .nav-dropdown .dropdown-item a.router-link-active::after
         top calc(1rem - 2px)
     & > .sidebar-links

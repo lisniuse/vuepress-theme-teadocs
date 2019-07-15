@@ -15,9 +15,24 @@
       @click="toggleSidebar(false)"
     ></div>
 
+    <Sidebar
+      v-if="$page.frontmatter.home && !linksWrapMaxWidth"
+      :items="sidebarItems"
+      @toggle-sidebar="toggleSidebar"
+    >
+      <slot
+        name="sidebar-top"
+        slot="top"
+      />
+      <slot
+        name="sidebar-bottom"
+        slot="bottom"
+      />
+    </Sidebar>
+
     <Home v-if="$page.frontmatter.home"/>
 
-    <div v-else class="docs-layout">
+    <div v-else class="docs-layout"> 
 
       <div class="search-layout">
         <AlgoliaSearchBox
@@ -194,7 +209,7 @@ export default {
 }
 </script>
 
-<style src="prismjs/themes/prism-tomorrow.css"></style>
+<style src="prismjs/themes/prism-solarizedlight.css"></style>
 
 <style lang="stylus">
 .docs-layout
