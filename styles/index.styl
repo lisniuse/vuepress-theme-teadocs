@@ -205,9 +205,14 @@ th, td
 
 @media (min-width: ($MQMobile + 1px))
   .theme-container.no-sidebar
-    .sidebar
+    .sidebar, .search-layout
       display none
-
+    .theme-default-content:not(.custom)
+      max-width 100%
+      padding 2rem 0rem
+    .page-edit
+      max-width 100%
+      padding 2rem 0rem
     .page
       padding-left 0
 
