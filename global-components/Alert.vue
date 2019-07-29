@@ -1,47 +1,81 @@
 <template>
-  <div class="warning custom-block teadocs-alert" v-if="$site.themeConfig.alert && isShow" :class="{'show': elShow}">
-    <p class="custom-block-title">文档公告</p>
-    <p v-html="$site.themeConfig.alert"></p>
-    <div class="btn-close" @click="close">✕</div>
+  <div class="alert-warp">
+    <template v-for="(item, index) in data">
+      <div
+        :key="index"
+        class="warning custom-block teadocs-alert"
+        :ref="item.ref"
+        v-if="item.elShow"
+        :class="{'show': item.isShow}"
+      >
+        <p class="custom-block-title">{{item.title}}</p>
+        <p v-html="item.content"></p>
+        <div class="btn-close" @click="close(item)">✕</div>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
-import { setTimeout } from 'timers';
-const KEY = 'vuepress/teadocs/alert/isShow';
+const KEY = 'vuepress/teadocs/alert/elShow/';
 
 export default {
   data() {
     return {
-      isShow: false,
-      elShow: false
+      data: []
     }
   },
   mounted() {
-    let isShow = localStorage.getItem(KEY);
-    if (isShow === null) {
-      this.isShow = true;
-    } else if (isShow === true) {
-      this.isShow = isShow;
-    }
-    if (this.isShow === true) {
-      this.show();
-    }
+    this.paseAlert();
   },
   methods: {
-    close() {
-      localStorage.setItem(KEY, '0');
-      this.hide();
+
+    /**
+     * 解析公告数据
+     */
+    paseAlert() {
+      let array = this.$site.themeConfig.alert || [];
+      array.forEach(item => {
+        let elShow = localStorage.getItem(`${KEY}${item.id}`);
+        if (elShow === null) {
+          elShow = true;
+        } else {
+          elShow = Boolean(Number(elShow));
+        }
+        this.data.push({
+          id: item.id,
+          title: item.title,
+          content: item.content,
+          ref: `alert_${item.id}`,
+          elShow: elShow,
+          isShow: false
+        });
+      });
+      this.showAll();
     },
 
-    show() {
-      setTimeout(() => {
-        this.elShow = true;
+    close(item) {
+      localStorage.setItem(`${KEY}${item.id}`, '0');
+      this.hide(item);
+    },
+
+    showAll() {
+      let index = -1;
+      let timer = window.setInterval(() => {
+        index++;
+        let item = this.data[index];
+        if (!item) {
+          window.clearInterval(timer);
+        } else {
+          if (item.elShow === true) {
+            item.isShow = true;
+          }
+        }
       }, 500);
     },
 
-    hide() {
-      this.elShow = false;
+    hide(item) {
+      item.isShow = false;
     }
   },
 }
@@ -50,41 +84,48 @@ export default {
 <style lang="stylus">
 $MQMobile = 918px
 
-.teadocs-alert
+.alert-warp
   position fixed
-  visibility hidden
-  z-index 100
-  right -501px
+  right 0px
   top 60px
-  width 500px
-  box-shadow 0 5px 10px rgba(0, 0, 0, 0.2)
-  background-color #fff8d2 !important
-  opacity 0
-  transition all 0.4s ease-in-out;
+  z-index 100
 
-  &.show
-    right 0px
-    opacity 1
-    visibility visible
+  .teadocs-alert
+    margin-bottom 10px
+    position relative
+    visibility hidden
+    right -501px
+    width 500px
+    box-shadow 0 5px 10px rgba(0, 0, 0, 0.2)
+    background-color #fff8d2 !important
+    opacity 0
+    transition all 0.4s ease-in-out;
 
-  .btn-close
-    position absolute
-    right 20px
-    top 10px
-    color #2c3e50
-    font-size 24px
-    cursor pointer
-    transition color 0.4s;
+    &.show
+      right 0px
+      opacity 1
+      visibility visible
 
-    &:hover
-      color #000
+    .btn-close
+      position absolute
+      right 20px
+      top 10px
+      color #2c3e50
+      font-size 24px
+      cursor pointer
+      transition color 0.4s;
+
+      &:hover
+        color #000
 
 @media (max-width: $MQMobile)
-  .teadocs-alert
+  .alert-warp
     top $navbarHeight;
     z-index 0
     width 100%
-    margin 0px !important
-    box-sizing border-box
-    box-shadow none
+    .teadocs-alert
+      width 100%
+      margin 0px !important
+      box-sizing border-box
+      box-shadow none
 </style>
