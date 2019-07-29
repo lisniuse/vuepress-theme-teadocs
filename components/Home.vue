@@ -91,10 +91,9 @@ export default {
       box-sizing: border-box;
       // border-bottom: 1px solid darken($accentColor, 10%);
       box-shadow: 0 6px darken($accentColor, 10%);
-      transition all 0.3s
+      transition box-shadow 0.2s
 
       &:hover {
-        top 4px
         background-color lighten($accentColor, 10%)
         box-shadow 0 2px darken($accentColor, 10%)
       }
