@@ -7,6 +7,8 @@
 </template>
 
 <style lang="stylus">
+$MQMobile = 918px
+
 .sidebar-button
   cursor pointer
   display none

@@ -79,18 +79,28 @@ export default {
     }
 
     .action-button {
+      outline none;
+      position relative
       display: inline-block;
       font-size: 1.2rem;
       color: #fff;
       background-color: $accentColor;
-      padding: 0.8rem 1.6rem;
+      padding: 0.7rem 1.6rem;
       border-radius: 4px;
       transition: background-color 0.1s ease;
       box-sizing: border-box;
-      border-bottom: 1px solid darken($accentColor, 10%);
+      // border-bottom: 1px solid darken($accentColor, 10%);
+      box-shadow: 0 6px darken($accentColor, 10%);
+      transition all 0.3s
 
       &:hover {
-        background-color: lighten($accentColor, 10%);
+        top 4px
+        background-color lighten($accentColor, 10%)
+        box-shadow 0 2px darken($accentColor, 10%)
+      }
+
+      &:active {
+        background-color darken($accentColor, 10%)
       }
     }
   }

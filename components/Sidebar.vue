@@ -34,7 +34,7 @@ export default {
 
   methods: {
     bindSizeChange() {
-      const MOBILE_DESKTOP_BREAKPOINT = 719 // refer to config.styl
+      const MOBILE_DESKTOP_BREAKPOINT = 903 // refer to config.styl
       const handleLinksWrapWidth = () => {
         if (document.documentElement.clientWidth < MOBILE_DESKTOP_BREAKPOINT) {
           this.linksWrapMaxWidth = null;
@@ -51,6 +51,8 @@ export default {
 </script>
 
 <style lang="stylus">
+$MQMobile = 918px
+
 .sidebar
   ul
     padding 0

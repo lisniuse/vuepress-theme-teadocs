@@ -69,7 +69,7 @@
         />
       </Page>
     </div>
-
+    <alert></alert>
   </div>
 </template>
 
@@ -170,7 +170,7 @@ export default {
   methods: {
 
     bindSizeChange() {
-      const MOBILE_DESKTOP_BREAKPOINT = 719 // refer to config.styl
+      const MOBILE_DESKTOP_BREAKPOINT = 903 // refer to config.styl
       const handleLinksWrapWidth = () => {
         if (document.documentElement.clientWidth < MOBILE_DESKTOP_BREAKPOINT) {
           this.linksWrapMaxWidth = null;

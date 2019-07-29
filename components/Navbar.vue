@@ -54,7 +54,7 @@ export default {
   },
 
   mounted () {
-    const MOBILE_DESKTOP_BREAKPOINT = 719 // refer to config.styl
+    const MOBILE_DESKTOP_BREAKPOINT = 903 // refer to config.styl
     const NAVBAR_VERTICAL_PADDING = parseInt(css(this.$el, 'paddingLeft')) + parseInt(css(this.$el, 'paddingRight'))
     const handleLinksWrapWidth = () => {
       if (document.documentElement.clientWidth < MOBILE_DESKTOP_BREAKPOINT) {
@@ -90,6 +90,7 @@ function css (el, property) {
 <style lang="stylus">
 $navbar-vertical-padding = 0.7rem
 $navbar-horizontal-padding = 1.5rem
+$MQMobile = 918px
 
 .navbar
   padding 0px
