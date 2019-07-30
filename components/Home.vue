@@ -150,6 +150,11 @@ export default {
     .feature {
       max-width: 100%;
     }
+
+    .footer {
+      padding: 1.2rem 0rem 1.2rem 0rem;
+      font-size: 14px;
+    }
   }
 }
 
