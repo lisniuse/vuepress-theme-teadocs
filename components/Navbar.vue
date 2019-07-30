@@ -49,7 +49,7 @@ export default {
 
   data () {
     return {
-      linksWrapMaxWidth: null
+      linksWrapMaxWidth: 1
     }
   },
 
@@ -125,7 +125,6 @@ $MQMobile = 918px
     position relative
   .links
     height 100%
-    padding-left 1.5rem
     box-sizing border-box
     background-color white
     white-space nowrap

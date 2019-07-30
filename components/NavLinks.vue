@@ -128,9 +128,6 @@ export default {
       box-sizing border-box
       line-height $navbarHeight
       color inherit
-      // border-top 2px solid transparent
-      -webkit-transition all .2s ease
-      transition all .2s ease
       &:hover, &.router-link-active
         color $accentColor
         &:after
@@ -152,12 +149,13 @@ export default {
     height 100%
     position relative
     display block
-    margin-left 1rem
-    margin-right 1rem
     line-height 2rem
     float left
-    &:first-child
-      margin-left 0
+    a
+      margin-left 1rem
+      margin-right 1rem
+      &.dropdown-title
+        margin-right 0.5rem
   .repo-link
     position relative
     line-height $navbarHeight + 0.1rem
@@ -198,6 +196,7 @@ export default {
         color #aaa
     a
       line-height 1.4rem !important
+      margin-left 0px !important
       &:after
         display none !important
     .nav-item, .repo-link
