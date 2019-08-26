@@ -28,8 +28,8 @@
         target="_blank"
         rel="noopener noreferrer"
       >
+        <Github/>
         <span class="text">{{ repoLabel }}</span>
-        <OutboundLink/>
       </a>
     </div>
   </nav>
@@ -37,11 +37,17 @@
 
 <script>
 import DropdownLink from '@theme/components/DropdownLink.vue'
-import { resolveNavLinkItem } from '../util'
 import NavLink from '@theme/components/NavLink.vue'
+import Github from "@theme/global-components/Github.vue";
+
+import { resolveNavLinkItem } from '../util'
 
 export default {
-  components: { NavLink, DropdownLink },
+  components: { 
+    NavLink,
+    DropdownLink,
+    Github
+  },
 
   computed: {
     userNav () {
@@ -166,7 +172,7 @@ export default {
     padding-right 10px
     color #ffffff !important
     background-color $accentColor
-    transition all .2s ease
+    transition all .5s ease
     border none
     &:hover
       border none
@@ -175,12 +181,17 @@ export default {
       color $textColor !important
       svg
         color $textColor
+        fill $textColor
     .text
       display inline
       position relative
       top: -1px
+    .svg-icon-github
+      svg
+        position relative
+        top: 1px
     svg
-      transition all .2s ease
+      transition all .5s ease
       position relative
       top: -3px
       color #ffffff

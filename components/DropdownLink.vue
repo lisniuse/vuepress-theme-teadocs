@@ -1,7 +1,6 @@
 <template>
   <div
-    class="dropdown-wrapper"
-    :class="{ open }"
+    class="dropdown-wrapper open"
   >
     <a
       class="dropdown-title"
@@ -14,38 +13,36 @@
       ></span>
     </a>
 
-    <DropdownTransition>
-      <ul
-        class="nav-dropdown"
-        v-show="open"
+    <ul
+      class="nav-dropdown"
+      v-show="open"
+    >
+      <li
+        class="dropdown-item"
+        :key="subItem.link || index"
+        v-for="(subItem, index) in item.items"
       >
-        <li
-          class="dropdown-item"
-          :key="subItem.link || index"
-          v-for="(subItem, index) in item.items"
+        <h4 v-if="subItem.type === 'links'">{{ subItem.text }}</h4>
+
+        <ul
+          class="dropdown-subitem-wrapper"
+          v-if="subItem.type === 'links'"
         >
-          <h4 v-if="subItem.type === 'links'">{{ subItem.text }}</h4>
-
-          <ul
-            class="dropdown-subitem-wrapper"
-            v-if="subItem.type === 'links'"
+          <li
+            class="dropdown-subitem"
+            :key="childSubItem.link"
+            v-for="childSubItem in subItem.items"
           >
-            <li
-              class="dropdown-subitem"
-              :key="childSubItem.link"
-              v-for="childSubItem in subItem.items"
-            >
-              <NavLink :item="childSubItem"/>
-            </li>
-          </ul>
+            <NavLink :item="childSubItem"/>
+          </li>
+        </ul>
 
-          <NavLink
-            v-else
-            :item="subItem"
-          />
-        </li>
-      </ul>
-    </DropdownTransition>
+        <NavLink
+          v-else
+          :item="subItem"
+        />
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -161,7 +158,7 @@ export default {
       border-top 6px solid $arrowBgColor
       border-bottom 0
     .nav-dropdown
-      transition all 0.2s
+      transition opacity 0.6s
       opacity 0
       visibility hidden
       // Avoid height shaked by clicking

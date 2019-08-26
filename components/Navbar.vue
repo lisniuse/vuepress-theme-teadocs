@@ -9,16 +9,18 @@
       >
         <img
           class="logo"
-          v-if="$site.themeConfig.logo"
-          :src="$withBase($site.themeConfig.logo)"
-          :alt="$siteTitle"
+          v-if="logoObj.image"
+          :src="$withBase(logoObj.image)"
+          :alt="logoObj.text"
         >
         <span
           ref="siteName"
           class="site-name"
-          v-if="$siteTitle"
-          :class="{ 'can-hide': $site.themeConfig.logo }"
-        >{{ $siteTitle }}</span>
+          v-if="logoObj.text"
+        >{{ logoObj.text }}</span>
+        <span class="sub-text" v-if="logoObj.subText">
+          {{ logoObj.subText }}
+        </span>
       </router-link>
 
       <div
@@ -49,11 +51,17 @@ export default {
 
   data () {
     return {
-      linksWrapMaxWidth: 1
+      linksWrapMaxWidth: 1,
+      logoObj: {
+        text: '',
+        subText: '',
+        image: ''
+      }
     }
   },
 
   mounted () {
+    this.parseLogoObj();
     const MOBILE_DESKTOP_BREAKPOINT = 903 // refer to config.styl
     const NAVBAR_VERTICAL_PADDING = parseInt(css(this.$el, 'paddingLeft')) + parseInt(css(this.$el, 'paddingRight'))
     const handleLinksWrapWidth = () => {
@@ -76,7 +84,17 @@ export default {
     isAlgoliaSearch () {
       return this.algolia && this.algolia.apiKey && this.algolia.indexName
     }
-  }
+  },
+  
+  methods: {
+    parseLogoObj() {
+      this.logoObj = this.$site.themeConfig.logo || {
+        text: this.$siteTitle || 'Logo',
+        subText: '',
+        image: ''
+      };
+    }
+  },
 }
 
 function css (el, property) {
@@ -106,27 +124,45 @@ $MQMobile = 918px
      clear both        
      visibility hidden
     .home-link
+      position relative
       height 100%
       line-height $navbarHeight
-      margin-right 1rem
+      margin-right 0rem
+      padding-right 2.2rem
       float left
+      // border-right 1px solid rgba(0, 0, 0, 0.04)
+      transition transform .2s
+      &:hover
+        border none
+        transform scale(1.2)
   a, span, img
     display inline-block
   .logo
-    height $navbarHeight - 1.4rem
-    min-width $navbarHeight - 1.4rem
-    margin-right 0.8rem
-    vertical-align top
+    position relative
+    height $navbarHeight - 2.2rem
+    width $navbarHeight - 2.2rem
+    vertical-align text-bottom
   .site-name
     height 100%
-    font-size 1.3rem
-    font-weight 600
+    font-size 1rem;
+    font-weight bold;
     color $textColor
     position relative
+  .sub-text
+    position absolute
+    top 10px
+    right 0px
+    font-size 12px
+    color #ffffff
+    line-height 1.2
+    background-color darken($accentColor, 10%)
+    padding-left 2px
+    padding-right 2px
+    border-radius 2px
+    transform: scale(0.8);
   .links
     height 100%
     box-sizing border-box
-    background-color white
     white-space nowrap
     font-size 0.9rem
     float left
@@ -140,6 +176,15 @@ $MQMobile = 918px
 @media (max-width: $MQMobile)
   .navbar
     padding-left 4rem
+    .inner
+      .home-link
+        border none
+        .logo
+          display none 
+        .sub-text 
+          font-size: 1rem;
+          display initial;
+          position: initial;
     .can-hide
       display none
     .links
