@@ -70,10 +70,12 @@
       </Page>
     </div>
     <alert></alert>
+    <chat-room></chat-room>
   </div>
 </template>
 
 <script>
+import chatRoom from '@theme/components/chatRoom.vue'
 import Home from '@theme/components/Home.vue'
 import Navbar from '@theme/components/Navbar.vue'
 import Page from '@theme/components/Page.vue'
@@ -91,7 +93,8 @@ export default {
     Sidebar,
     Navbar,
     AlgoliaSearchBox,
-    SearchBox
+    SearchBox,
+    chatRoom
   },
 
   data () {
