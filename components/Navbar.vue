@@ -1,8 +1,7 @@
 <template>
-  <header class="navbar">
+  <header class="navbar" :class="{'shadow': isShowShadow}">
     <div class="inner">
       <SidebarButton @toggle-sidebar="$emit('toggle-sidebar')"/>
-
       <router-link
         :to="$localePath"
         class="home-link"
@@ -46,11 +45,14 @@ import SearchBox from '@SearchBox'
 import SidebarButton from '@theme/components/SidebarButton.vue'
 import NavLinks from '@theme/components/NavLinks.vue'
 
+const MOBILE_DESKTOP_BREAKPOINT = 1048 // refer to config.styl
+
 export default {
   components: { SidebarButton, NavLinks, SearchBox, AlgoliaSearchBox },
 
   data () {
     return {
+      isShowShadow: false,
       linksWrapMaxWidth: 1,
       logoObj: {
         text: '',
@@ -62,7 +64,7 @@ export default {
 
   mounted () {
     this.parseLogoObj();
-    const MOBILE_DESKTOP_BREAKPOINT = 903 // refer to config.styl
+    
     const NAVBAR_VERTICAL_PADDING = parseInt(css(this.$el, 'paddingLeft')) + parseInt(css(this.$el, 'paddingRight'))
     const handleLinksWrapWidth = () => {
       if (document.documentElement.clientWidth < MOBILE_DESKTOP_BREAKPOINT) {
@@ -73,7 +75,8 @@ export default {
       }
     }
     handleLinksWrapWidth()
-    window.addEventListener('resize', handleLinksWrapWidth, false)
+    window.addEventListener('resize', handleLinksWrapWidth, false);
+    this.listenScroll();
   },
 
   computed: {
@@ -93,8 +96,23 @@ export default {
         subText: '',
         image: ''
       };
+    },
+
+    listenScroll() {
+      if (!this.linksWrapMaxWidth) {
+        this.isShowShadow = true;
+      } else {
+        window.addEventListener("scroll", e => {
+          let top = document.documentElement.scrollTop || document.body.scrollTop;
+          if (top >= 2) {
+            this.isShowShadow = true;
+          } else {
+            this.isShowShadow = false;
+          }
+        });
+      }
     }
-  },
+  }
 }
 
 function css (el, property) {
@@ -108,14 +126,15 @@ function css (el, property) {
 <style lang="stylus">
 $navbar-vertical-padding = 0.7rem
 $navbar-horizontal-padding = 1.5rem
-$MQMobile = 918px
+$MQMobile = 1048px
 
 .navbar
-  padding 0px
-  line-height $navbarHeight - 1.4rem
+  transition box-shadow 0.4s;
+  &.shadow
+     box-shadow 0px 6px 20px rgba(0, 0, 0, 0.05)
   .inner
     height 100%
-    max-width 1024px
+    max-width 1048px
     margin 0 auto
     &:after
      content ""       
@@ -126,7 +145,7 @@ $MQMobile = 918px
     .home-link
       position relative
       height 100%
-      line-height $navbarHeight
+      line-height 78px
       margin-right 0rem
       padding-right 2.2rem
       float left
@@ -150,7 +169,7 @@ $MQMobile = 918px
     position relative
   .sub-text
     position absolute
-    top 10px
+    top 21px
     right 0px
     font-size 12px
     color #ffffff
@@ -179,6 +198,7 @@ $MQMobile = 918px
     .inner
       .home-link
         border none
+        line-height $navbarHeight
         .logo
           display none 
         .sub-text 

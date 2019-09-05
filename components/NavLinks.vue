@@ -124,18 +124,25 @@ export default {
 </script>
 
 <style lang="stylus">
+$MQMobile = 1048px
+
 .nav-links
   display block
   height 100%
   .nav-item
     > a:not(.repo-link), .dropdown-title
+      outline none
       height 100%
       display block !important
       box-sizing border-box
-      line-height $navbarHeight
       color inherit
+      font-weight normal
+      @media (min-width: $MQMobile)
+        &
+          line-height 80px
       &:hover, &.router-link-active
         color $accentColor
+        font-weight 500
         &:after
           width 40% !important
       &:after
@@ -157,14 +164,18 @@ export default {
     display block
     line-height 2rem
     float left
+    .dropdown-wrapper
+      &.open
+        a
+          &.dropdown-title
+            margin-bottom 0.5rem
     a
       margin-left 1rem
       margin-right 1rem
-      &.dropdown-title
-        margin-right 0.5rem
+
   .repo-link
     position relative
-    line-height $navbarHeight + 0.1rem
+    line-height 80px
     display inline !important
     border-radius 20px
     padding 5px
@@ -199,10 +210,13 @@ export default {
 @media (max-width: $MQMobile)
   .nav-links
     .repo-link
-      background-color #ffffff
-      color $textColor !important
-      padding 0 !important
-      font-size 1.1em !important
+      background-color $accentColor
+      color #ffffff !important
+      padding-top 0.2rem !important
+      padding-bottom 0.2rem !important
+      padding-left 0.5rem !important
+      padding-right 0.5rem !important
+      font-size 1em !important
       svg
         color #aaa
     a

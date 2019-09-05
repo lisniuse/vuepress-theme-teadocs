@@ -1,6 +1,7 @@
 <template>
   <div
-    class="dropdown-wrapper open"
+    class="dropdown-wrapper"
+    :class="{'open': open}"
   >
     <a
       class="dropdown-title"
@@ -15,6 +16,7 @@
 
     <ul
       class="nav-dropdown"
+      :class="{'dropdown-open': open}"
       v-show="open"
     >
       <li
@@ -23,7 +25,6 @@
         v-for="(subItem, index) in item.items"
       >
         <h4 v-if="subItem.type === 'links'">{{ subItem.text }}</h4>
-
         <ul
           class="dropdown-subitem-wrapper"
           v-if="subItem.type === 'links'"
@@ -139,7 +140,7 @@ export default {
           padding-top 0
         h4, & > a
           font-size 15px
-          line-height 2rem
+          line-height 2rem !important
         .dropdown-subitem
           font-size 14px
           padding-left 1rem
@@ -171,7 +172,7 @@ export default {
       right 0
       background-color #fff
       padding 0.6rem 0
-      box-shadow 0 5px 10px rgba(0,0,0,0.12)
+      box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.09);
       border-bottom-color #ccc
       text-align left
       border-radius 0.25rem

@@ -26,11 +26,13 @@ body
   top 0
   left 0
   right 0
-  height $navbarHeight
-  background-color rgba(255, 255, 255, 0.90)
+  background-color rgba(255, 255, 255, 0.92)
   box-sizing border-box
-  box-shadow 0px 6px 20px rgba(0, 0, 0, 0.06)
-  pointer-events: auto;
+  pointer-events auto
+  
+  @media (min-width: $MQMobile)
+    &
+      height 80px
 
 .sidebar-mask
   position fixed
@@ -48,10 +50,10 @@ body
   position fixed
   z-index 10
   margin 0
-  top 8rem
+  top 10rem
   bottom 0
   box-sizing border-box
-  border-right 1px solid $borderColor
+  // border-right 1px solid $borderColor
   overflow-y hidden
   padding-right 5px
   &.cursor
@@ -133,6 +135,11 @@ h1, h2, h3, h4, h5, h6
     &:first-child
       margin-top -1.5rem
       margin-bottom 1rem
+      
+      @media (min-width: $MQMobile)
+        &
+          font-size 2.8rem
+          font-weight bold
 
       + p, + pre, + .custom-block
         margin-top 2rem
@@ -186,7 +193,7 @@ tr
 
 th, td
   border 1px solid #dfe2e5
-  padding .6em 1em
+  padding: .4rem .6rem;
 
 .theme-container
   &.sidebar-open

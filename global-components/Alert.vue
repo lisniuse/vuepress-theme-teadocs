@@ -82,7 +82,7 @@ export default {
 </script>
 
 <style lang="stylus">
-$MQMobile = 918px
+$MQMobile = 1048px
 
 .alert-warp
   position fixed

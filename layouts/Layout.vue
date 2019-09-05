@@ -87,7 +87,7 @@ import SearchBox from '@SearchBox'
 import { resolveSidebarItems } from '../util'
 
 export default {
-  components: { 
+  components: {
     Home,
     Page,
     Sidebar,
@@ -173,7 +173,7 @@ export default {
   methods: {
 
     bindSizeChange() {
-      const MOBILE_DESKTOP_BREAKPOINT = 903 // refer to config.styl
+      const MOBILE_DESKTOP_BREAKPOINT = 1048 // refer to config.styl
       const handleLinksWrapWidth = () => {
         if (document.documentElement.clientWidth < MOBILE_DESKTOP_BREAKPOINT) {
           this.linksWrapMaxWidth = null;
@@ -215,11 +215,13 @@ export default {
 <style src="prismjs/themes/prism-solarizedlight.css"></style>
 
 <style lang="stylus">
+$MQMobile = 1048px
+
 .docs-layout
-  max-width: 1024px
+  max-width: 1048px
   margin: 0 auto
   .search-layout
-    top 5rem
+    top 7rem
     padding-left 0rem
     box-sizing border-box
     width 17rem
@@ -236,4 +238,14 @@ export default {
       border none !important
       background-color #ffffff
       box-shadow 0 5px 10px rgba(0,0,0,0.12)
+@media (min-width: $MQMobile)
+  .docs-layout
+    .search-box
+      input
+        border none
+        background-color lighten($accentColor, 97%)
+        color $textColor
+        &:focus
+          background-color #ffffff
+          box-shadow 0 5px 10px rgba(0,0,0,0.06)
 </style>
