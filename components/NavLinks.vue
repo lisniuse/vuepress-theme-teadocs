@@ -140,7 +140,12 @@ $MQMobile = 1048px
       @media (min-width: $MQMobile)
         &
           line-height 80px
-      &:hover, &.router-link-active
+      &:hover
+        color $accentColor
+        font-weight normal
+        &:after
+          width 40% !important
+      &.router-link-active
         color $accentColor
         font-weight 500
         &:after
