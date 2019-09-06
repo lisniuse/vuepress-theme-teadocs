@@ -1,5 +1,5 @@
 <template>
-  <header class="navbar" :class="{'shadow': isShowShadow, 'show': isShowNavbar}">
+  <header class="navbar" ref="navbar" :class="{'shadow': isShowShadow, 'show': isShowNavbar}" style="opacity: 0;">
     <div class="inner">
       <SidebarButton @toggle-sidebar="$emit('toggle-sidebar')"/>
       <router-link
@@ -44,6 +44,7 @@ import AlgoliaSearchBox from '@AlgoliaSearchBox'
 import SearchBox from '@SearchBox'
 import SidebarButton from '@theme/components/SidebarButton.vue'
 import NavLinks from '@theme/components/NavLinks.vue'
+import { setTimeout } from 'timers';
 
 const MOBILE_DESKTOP_BREAKPOINT = 1048 // refer to config.styl
 
@@ -121,17 +122,19 @@ export default {
      * 监听滚动条
      */
     listenScroll() {
+      const handle = (e) => {
+        let top = document.documentElement.scrollTop || document.body.scrollTop;
+        if (top >= 2) {
+          this.isShowShadow = true;
+        } else {
+          this.isShowShadow = false;
+        }
+      }
       if (!this.linksWrapMaxWidth) {
         this.isShowShadow = true;
       } else {
-        window.addEventListener("scroll", e => {
-          let top = document.documentElement.scrollTop || document.body.scrollTop;
-          if (top >= 2) {
-            this.isShowShadow = true;
-          } else {
-            this.isShowShadow = false;
-          }
-        });
+        window.addEventListener("scroll", handle);
+        handle();
       }
     },
 
@@ -140,6 +143,7 @@ export default {
      */
     listenLoad() {
       window.document.addEventListener("readystatechange", () => {
+        this.$refs.navbar.style.opacity = 1;
         this.isShowNavbar = true;
       });
     }
@@ -161,9 +165,9 @@ $MQMobile = 1048px
 
 .navbar
   transition all 0.4s
-  opacity 0 !important
+  // opacity 0 !important
   &.show
-    opacity 1 !important
+    // opacity 1 !important
   &.shadow
      box-shadow 0px 6px 20px rgba(0, 0, 0, 0.05)
   .inner
