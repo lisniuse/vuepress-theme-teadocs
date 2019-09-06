@@ -1,5 +1,5 @@
 <template>
-  <header class="navbar" :class="{'shadow': isShowShadow}">
+  <header class="navbar" :class="{'shadow': isShowShadow, 'show': isShowNavbar}">
     <div class="inner">
       <SidebarButton @toggle-sidebar="$emit('toggle-sidebar')"/>
       <router-link
@@ -52,6 +52,7 @@ export default {
 
   data () {
     return {
+      isShowNavbar: false,
       isShowShadow: false,
       linksWrapMaxWidth: 1,
       logoObj: {
@@ -63,20 +64,17 @@ export default {
   },
 
   mounted () {
-    this.parseLogoObj();
+    // 解析 logo
+    this.parseLogoConfig();
     
-    const NAVBAR_VERTICAL_PADDING = parseInt(css(this.$el, 'paddingLeft')) + parseInt(css(this.$el, 'paddingRight'))
-    const handleLinksWrapWidth = () => {
-      if (document.documentElement.clientWidth < MOBILE_DESKTOP_BREAKPOINT) {
-        this.linksWrapMaxWidth = null
-      } else {
-        this.linksWrapMaxWidth = this.$el.offsetWidth - NAVBAR_VERTICAL_PADDING
-          - (this.$refs.siteName && this.$refs.siteName.offsetWidth || 0)
-      }
-    }
-    handleLinksWrapWidth()
-    window.addEventListener('resize', handleLinksWrapWidth, false);
+    // 监听窗口大小改变
+    this.listenResize();
+
+    // 监听滚动条改变
     this.listenScroll();
+
+    // 监听网页加载状态
+    this.listenLoad();
   },
 
   computed: {
@@ -90,7 +88,10 @@ export default {
   },
   
   methods: {
-    parseLogoObj() {
+    /**
+     * 解析 logo 配置信息
+     */
+    parseLogoConfig() {
       this.logoObj = this.$site.themeConfig.logo || {
         text: this.$siteTitle || 'Logo',
         subText: '',
@@ -98,6 +99,27 @@ export default {
       };
     },
 
+    /**
+     * 监听窗口大小改变
+     */
+    listenResize() {
+      const NAVBAR_VERTICAL_PADDING = parseInt(css(this.$el, 'paddingLeft')) + parseInt(css(this.$el, 'paddingRight'))
+      const handleLinksWrapWidth = () => {
+        if (document.documentElement.clientWidth < MOBILE_DESKTOP_BREAKPOINT) {
+          this.linksWrapMaxWidth = null
+        } else {
+          this.linksWrapMaxWidth = this.$el.offsetWidth - NAVBAR_VERTICAL_PADDING
+            - (this.$refs.siteName && this.$refs.siteName.offsetWidth || 0)
+        }
+      }
+      handleLinksWrapWidth();
+      // 监听窗口大小改变
+      window.addEventListener('resize', handleLinksWrapWidth, false);
+    },
+
+    /**
+     * 监听滚动条
+     */
     listenScroll() {
       if (!this.linksWrapMaxWidth) {
         this.isShowShadow = true;
@@ -111,6 +133,15 @@ export default {
           }
         });
       }
+    },
+
+    /**
+     * 监听网页加载
+     */
+    listenLoad() {
+      window.document.addEventListener("readystatechange", () => {
+        this.isShowNavbar = true;
+      });
     }
   }
 }
@@ -129,7 +160,10 @@ $navbar-horizontal-padding = 1.5rem
 $MQMobile = 1048px
 
 .navbar
-  transition box-shadow 0.4s;
+  transition all 0.4s
+  opacity 0 !important
+  &.show
+    opacity 1 !important
   &.shadow
      box-shadow 0px 6px 20px rgba(0, 0, 0, 0.05)
   .inner
