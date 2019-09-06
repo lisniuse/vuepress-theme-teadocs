@@ -137,10 +137,10 @@ $MQMobile = 1048px
     max-width 1048px
     margin 0 auto
     &:after
-     content ""       
+     content ""
      display block
-     height 0        
-     clear both        
+     height 0
+     clear both
      visibility hidden
     .home-link
       position relative
