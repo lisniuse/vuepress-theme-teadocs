@@ -47,11 +47,17 @@ export default {
 </script>
 
 <style lang="stylus">
+$MQMobile = 1048px
+
 .home {
   padding: $navbarHeight 2rem 0;
   max-width: 960px;
   margin: 0px auto;
   display: block;
+  
+  @media (min-width: $MQMobile) {
+    padding-top: 80px;
+  }
 
   .hero {
     text-align: center;
