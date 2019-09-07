@@ -50,9 +50,13 @@ export default {
   },
 
   mounted() {
-    this.isShow = window.document.documentElement.clientWidth > 760;
-    this.getCount();
-    this.parseConfig();
+    if (this.$site.themeConfig.comment) {
+      if ( window.document.documentElement.clientWidth > 760 ) {
+        this.isShow = true;
+      }
+      this.getCount();
+      this.parseConfig();
+    }
   },
 
   methods: {
@@ -61,7 +65,7 @@ export default {
      */
     parseConfig() {
       let config = this.$site.themeConfig.comment;
-      if (!config) return;
+      if (!config) return false;
       if (config.title) this.config.title = config.title;
     },
 

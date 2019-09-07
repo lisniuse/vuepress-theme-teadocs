@@ -1,6 +1,6 @@
 {
   "name": "vuepress-theme-teadocs",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Teadocs theme for VuePress.",
   "main": "index.js",
   "repository": {
