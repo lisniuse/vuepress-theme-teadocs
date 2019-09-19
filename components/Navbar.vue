@@ -74,8 +74,8 @@ export default {
     // 监听滚动条改变
     this.listenScroll();
 
-    // 监听网页加载状态
-    this.listenLoad();
+    // 显示顶部导航
+    this.showNavbar();
   },
 
   computed: {
@@ -139,13 +139,17 @@ export default {
     },
 
     /**
-     * 监听网页加载
+     * 显示顶部导航
      */
-    listenLoad() {
-      window.document.addEventListener("readystatechange", () => {
+    showNavbar() {
+      this.$nextTick(() => {
         this.$refs.navbar.style.opacity = 1;
         this.isShowNavbar = true;
       });
+      // window.document.addEventListener("readystatechange", () => {
+      //   this.$refs.navbar.style.opacity = 1;
+      //   this.isShowNavbar = true;
+      // });
     }
   }
 }
