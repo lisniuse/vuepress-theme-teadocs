@@ -169,7 +169,7 @@ $MQMobile = 1048px
   &.show
     // opacity 1 !important
   &.shadow
-     box-shadow 0px 6px 20px rgba(0, 0, 0, 0.05)
+    box-shadow 0px 3px 10px rgba(0,0,0,0.05)
   .inner
     height 100%
     max-width 1048px
@@ -251,7 +251,7 @@ $MQMobile = 1048px
       top 0
       .search-box
         padding-left 1rem
-        background-color: #ffffff
+        background-color transparent
         position absolute
         right: 0
         top 0.7rem
