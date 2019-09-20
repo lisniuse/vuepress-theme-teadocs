@@ -1,5 +1,5 @@
 <template>
-  <header class="navbar" ref="navbar" :class="{'shadow': isShowShadow, 'show': isShowNavbar}" style="opacity: 0;">
+  <header class="navbar" ref="navbar" :class="{'shadow': isShowShadow}">
     <div class="inner">
       <SidebarButton @toggle-sidebar="$emit('toggle-sidebar')"/>
       <router-link
@@ -8,26 +8,20 @@
       >
         <img
           class="logo"
-          v-if="logoObj.image"
-          :src="$withBase(logoObj.image)"
-          :alt="logoObj.text"
+          :src="$withBase($site.themeConfig.logo.image)"
+          :alt="$site.themeConfig.logo.text"
         >
         <span
           ref="siteName"
           class="site-name"
-          v-if="logoObj.text"
-        >{{ logoObj.text }}</span>
-        <span class="sub-text" v-if="logoObj.subText">
-          {{ logoObj.subText }}
+          v-if="$site.themeConfig.logo.text"
+        >{{ $site.themeConfig.logo.text }}</span>
+        <span class="sub-text" v-if="$site.themeConfig.logo.subText">
+          {{ $site.themeConfig.logo.subText }}
         </span>
       </router-link>
 
-      <div
-        class="links"
-        :style="linksWrapMaxWidth ? {
-          'max-width': linksWrapMaxWidth + 'px'
-        } : {}"
-      >
+      <div class="links">
         <AlgoliaSearchBox
           v-if="isAlgoliaSearch && !linksWrapMaxWidth"
           :options="algolia"
@@ -53,29 +47,18 @@ export default {
 
   data () {
     return {
-      isShowNavbar: false,
+      isShowNavbar: true,
       isShowShadow: false,
-      linksWrapMaxWidth: 1,
-      logoObj: {
-        text: '',
-        subText: '',
-        image: ''
-      }
+      linksWrapMaxWidth: 1
     }
   },
 
   mounted () {
-    // 解析 logo
-    this.parseLogoConfig();
-    
     // 监听窗口大小改变
     this.listenResize();
 
     // 监听滚动条改变
     this.listenScroll();
-
-    // 显示顶部导航
-    this.showNavbar();
   },
 
   computed: {
@@ -89,17 +72,6 @@ export default {
   },
   
   methods: {
-    /**
-     * 解析 logo 配置信息
-     */
-    parseLogoConfig() {
-      this.logoObj = this.$site.themeConfig.logo || {
-        text: this.$siteTitle || 'Logo',
-        subText: '',
-        image: ''
-      };
-    },
-
     /**
      * 监听窗口大小改变
      */
@@ -136,20 +108,6 @@ export default {
         window.addEventListener("scroll", handle);
         handle();
       }
-    },
-
-    /**
-     * 显示顶部导航
-     */
-    showNavbar() {
-      this.$nextTick(() => {
-        this.$refs.navbar.style.opacity = 1;
-        this.isShowNavbar = true;
-      });
-      // window.document.addEventListener("readystatechange", () => {
-      //   this.$refs.navbar.style.opacity = 1;
-      //   this.isShowNavbar = true;
-      // });
     }
   }
 }
@@ -168,10 +126,6 @@ $navbar-horizontal-padding = 1.5rem
 $MQMobile = 1048px
 
 .navbar
-  transition all 0.4s
-  // opacity 0 !important
-  &.show
-    // opacity 1 !important
   &.shadow
     box-shadow 0px 3px 10px rgba(0,0,0,0.05)
   .inner
@@ -196,6 +150,7 @@ $MQMobile = 1048px
       &:hover
         border none
         transform scale(1.2)
+
   a, span, img
     display inline-block
   .logo
