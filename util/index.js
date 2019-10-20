@@ -3,32 +3,73 @@ export const extRE = /\.(md|html)$/
 export const endingSlashRE = /\/$/
 export const outboundRE = /^(https?:|mailto:|tel:|[a-zA-Z]{4,}:)/
 
-export function normalize (path) {
+/**
+ * 异步dom选择器
+ * @param {*} selector 
+ * @param {*} callback 
+ */
+export function $dom (selector, callback) {
+  let timer = window.setInterval(() => {
+    let el = window.document.querySelector(selector);
+    if (el) {
+      window.clearInterval(timer);
+      callback(el);
+    }
+  }, 1);
+}
+
+/**
+ * 动态加载js
+ * @param {*} url 
+ * @param {*} callback 
+ */
+export function loadScript(url, callback) {
+  let script = document.createElement('script');
+  script.type = "text/javascript";
+  if (typeof (callback) != "undefined") {
+    if (script.readyState) {
+      script.onreadystatechange = function () {
+        if (script.readyState == "loaded" || script.readyState == "complete") {
+          script.onreadystatechange = null;
+          callback();
+        }
+      }
+    } else {
+      script.onload = function () {
+        callback();
+      }
+    }
+  }
+  script.src = url;
+  document.body.appendChild(script);
+}
+
+export function normalize(path) {
   return decodeURI(path)
     .replace(hashRE, '')
     .replace(extRE, '')
 }
 
-export function getHash (path) {
+export function getHash(path) {
   const match = path.match(hashRE)
   if (match) {
     return match[0]
   }
 }
 
-export function isExternal (path) {
+export function isExternal(path) {
   return outboundRE.test(path)
 }
 
-export function isMailto (path) {
+export function isMailto(path) {
   return /^mailto:/.test(path)
 }
 
-export function isTel (path) {
+export function isTel(path) {
   return /^tel:/.test(path)
 }
 
-export function ensureExt (path) {
+export function ensureExt(path) {
   if (isExternal(path)) {
     return path
   }
@@ -42,7 +83,7 @@ export function ensureExt (path) {
   return normalized + '.html' + hash
 }
 
-export function isActive (route, path) {
+export function isActive(route, path) {
   const routeHash = route.hash
   const linkHash = getHash(path)
   if (linkHash && routeHash !== linkHash) {
@@ -53,7 +94,7 @@ export function isActive (route, path) {
   return routePath === pagePath
 }
 
-export function resolvePage (pages, rawPath, base) {
+export function resolvePage(pages, rawPath, base) {
   if (isExternal(rawPath)) {
     return {
       type: 'external',
@@ -76,7 +117,7 @@ export function resolvePage (pages, rawPath, base) {
   return {}
 }
 
-function resolvePath (relative, base, append) {
+function resolvePath(relative, base, append) {
   const firstChar = relative.charAt(0)
   if (firstChar === '/') {
     return relative
@@ -121,12 +162,15 @@ function resolvePath (relative, base, append) {
  * @param { string } localePath
  * @returns { SidebarGroup }
  */
-export function resolveSidebarItems (page, regularPath, site, localePath) {
-  const { pages, themeConfig } = site
+export function resolveSidebarItems(page, regularPath, site, localePath) {
+  const {
+    pages,
+    themeConfig
+  } = site
 
-  const localeConfig = localePath && themeConfig.locales
-    ? themeConfig.locales[localePath] || themeConfig
-    : themeConfig
+  const localeConfig = localePath && themeConfig.locales ?
+    themeConfig.locales[localePath] || themeConfig :
+    themeConfig
 
   const pageSidebarConfig = page.frontmatter.sidebar || localeConfig.sidebar || themeConfig.sidebar
   if (pageSidebarConfig === 'auto') {
@@ -137,10 +181,13 @@ export function resolveSidebarItems (page, regularPath, site, localePath) {
   if (!sidebarConfig) {
     return []
   } else {
-    const { base, config } = resolveMatchingConfig(regularPath, sidebarConfig)
-    return config
-      ? config.map(item => resolveItem(item, pages, base))
-      : []
+    const {
+      base,
+      config
+    } = resolveMatchingConfig(regularPath, sidebarConfig)
+    return config ?
+      config.map(item => resolveItem(item, pages, base)) :
+      []
   }
 }
 
@@ -148,7 +195,7 @@ export function resolveSidebarItems (page, regularPath, site, localePath) {
  * @param { Page } page
  * @returns { SidebarGroup }
  */
-function resolveHeaders (page) {
+function resolveHeaders(page) {
   const headers = groupHeaders(page.headers || [])
   return [{
     type: 'group',
@@ -165,7 +212,7 @@ function resolveHeaders (page) {
   }]
 }
 
-export function groupHeaders (headers) {
+export function groupHeaders(headers) {
   // group h3s under h2
   headers = headers.map(h => Object.assign({}, h))
   let lastH2
@@ -179,7 +226,7 @@ export function groupHeaders (headers) {
   return headers.filter(h => h.level === 2)
 }
 
-export function resolveNavLinkItem (linkItem) {
+export function resolveNavLinkItem(linkItem) {
   return Object.assign(linkItem, {
     type: linkItem.items && linkItem.items.length ? 'links' : 'link'
   })
@@ -190,7 +237,7 @@ export function resolveNavLinkItem (linkItem) {
  * @param { Array<string|string[]> | Array<SidebarGroup> | [link: string]: SidebarConfig } config
  * @returns { base: string, config: SidebarConfig }
  */
-export function resolveMatchingConfig (regularPath, config) {
+export function resolveMatchingConfig(regularPath, config) {
   if (Array.isArray(config)) {
     return {
       base: '/',
@@ -208,13 +255,13 @@ export function resolveMatchingConfig (regularPath, config) {
   return {}
 }
 
-function ensureEndingSlash (path) {
-  return /(\.html|\/)$/.test(path)
-    ? path
-    : path + '/'
+function ensureEndingSlash(path) {
+  return /(\.html|\/)$/.test(path) ?
+    path :
+    path + '/'
 }
 
-function resolveItem (item, pages, base, groupDepth = 1) {
+function resolveItem(item, pages, base, groupDepth = 1) {
   if (typeof item === 'string') {
     return resolvePage(pages, item, base)
   } else if (Array.isArray(item)) {

@@ -31,7 +31,7 @@
 
     <slot name="bottom" />
 
-    <div class="comment" id="teadocs_comment" ref="comment" v-if="commentIn">评论系统加载中...🚀</div>
+    <div class="comment" id="teadocs_comment" ref="comment" v-if="!!commentIn">评论系统加载中...🚀</div>
   </main>
 </template>
 
@@ -167,7 +167,9 @@ export default {
       if (commentConfig && commentConfig.enable === true) {
         loadScript("https://unpkg.com/valine@latest/dist/Valine.min.js", () => {
           this.commentIn = undefined;
-          document.querySelector("#teadocs_comment").innerHTML = "";
+          if (document.querySelector("#teadocs_comment")) {
+            document.querySelector("#teadocs_comment").innerHTML = "";
+          }
           this.commentIn = new Valine({
             el: "#teadocs_comment",
             appId: "cgJ5GOhJuv3gtBvk2cx2HkrG-gzGzoHsz",
@@ -180,11 +182,6 @@ export default {
           });
           $dom(".v .vlist .vcard .vhead", el => {
             el.style.textAlign = "left";
-          });
-          $dom(".v .vwrap", el => {
-            el.style.border = "none";
-            el.style.padding = "0px";
-            // el.style.boxShadow = '0px 0px 20px #0000000d';
           });
         });
       }

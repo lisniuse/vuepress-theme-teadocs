@@ -179,7 +179,7 @@ $MQMobile = 1048px
       margin-left 1rem
       margin-right 1rem
     &.important
-      color #489dc1
+      color $accentColor !important
       a
         font-weight 500 !important
 
