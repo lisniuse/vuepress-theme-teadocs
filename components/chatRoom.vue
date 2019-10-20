@@ -1,7 +1,7 @@
 <template>
   <div class="chat-room" v-if="isShow">
     <div class="slide-warp">
-      <button class="btn-slide" @click="isShowAside = true">快捷留言板</button>
+      <button class="btn-slide" @click="isShowAside = true">快捷聊天室</button>
     </div>
     <aside class="aside-card" :class="{'show': isShowAside}">
       <div class="top">
@@ -20,14 +20,13 @@
           <div class="label">24小时人数</div>
         </div>
       </div>
-      <div class="comment">留言板功能正在飞速开发中 🚀</div>
+      <div class="chat" id="tchat" ref="chat">聊天室功能正在飞速开发中 🚀</div>
     </aside>
   </div>
 </template>
 
 <script>
 import Close from "@theme/global-components/Close.vue";
-
 import request from "@theme/util/request";
 
 export default {
@@ -36,13 +35,13 @@ export default {
       isShow: false,
       isShowAside: false,
       config: {
-        title: '访问者'
+        title: "访问者"
       },
       data: {
         all: 0,
         twentyFour: 0
       }
-    }
+    };
   },
 
   components: {
@@ -50,12 +49,13 @@ export default {
   },
 
   mounted() {
-    if (this.$site.themeConfig.comment) {
-      if ( window.document.documentElement.clientWidth > 760 ) {
+    if (this.$site.themeConfig.chatRoom) {
+      if (window.document.documentElement.clientWidth > 760) {
         this.isShow = true;
       }
       this.getCount();
       this.parseConfig();
+      this.initChat();
     }
   },
 
@@ -64,7 +64,7 @@ export default {
      * 解析规则
      */
     parseConfig() {
-      let config = this.$site.themeConfig.comment;
+      let config = this.$site.themeConfig.chatRoom;
       if (!config) return false;
       if (config.title) this.config.title = config.title;
     },
@@ -73,12 +73,25 @@ export default {
      * 获取访问数据
      */
     getCount() {
-      let url = `https://analysis.numpy.org.cn/count?sourceUrl=${encodeURIComponent(window.location.href)}`;
-      request('get', url, {}, (data) => {
-        this.data = data;
-      }, 'json');
-    }
-  },
+      let url = `https://analysis.numpy.org.cn/count?sourceUrl=${encodeURIComponent(
+        window.location.href
+      )}`;
+      request(
+        "get",
+        url,
+        {},
+        data => {
+          this.data = data;
+        },
+        "json"
+      );
+    },
+
+    /**
+     * 初始化聊天室
+     */
+    initChat() {}
+  }
 };
 </script>
 
@@ -113,7 +126,7 @@ export default {
   .aside-card {
     position: fixed;
     top: 0;
-    right: -400px;
+    right: -40vw;
     z-index: 1100;
     box-sizing: border-box;
     padding-bottom: 56px;
@@ -123,11 +136,11 @@ export default {
     height: 100vh;
     background-color: #fff;
     box-shadow: 0 0 0 1px hsla(0, 0%, 87%, 0.35), 0 8px 20px 0 rgba(0, 0, 0, 0.05), 0 4px 10px 0 rgba(0, 0, 0, 0.03);
-    overflow: hidden;
-    transition right 0.4s;
+    overflow: auto;
+    transition: right 0.4s;
 
     &.show {
-      right 0px;
+      right: 0px;
     }
 
     .top {
@@ -190,10 +203,11 @@ export default {
       }
     }
 
-    .comment {
-      height: calc(100vh - 207px);
-      width 100%;
+    .chat {
+      height: calc(100vh - 107px);
       padding-top: 100px;
+      width: 100%;
+      box-sizing: border-box;
       text-align: center;
       font-style: 18px;
       color: #aeaeae;

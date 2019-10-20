@@ -7,9 +7,14 @@
 
       <p class="description">{{ data.tagline || $description || 'Welcome to your VuePress site' }}</p>
 
-      <p class="action" v-if="data.actionText && data.actionLink">
-        <NavLink class="action-button" :item="actionLink" />
-      </p>
+      <div class="button-warp">
+        <p class="action" v-if="data.actionText && data.actionLink">
+          <NavLink class="action-button" :item="actionLink" />
+        </p>
+        <p class="action deep" v-if="data.action2Text && data.action2Link">
+          <NavLink class="action-button" :item="action2Link" />
+        </p>
+      </div>
     </header>
 
     <div class="features" v-if="data.features && data.features.length">
@@ -41,20 +46,27 @@ export default {
         link: this.data.actionLink,
         text: this.data.actionText
       };
+    },
+
+    action2Link() {
+      return {
+        link: this.data.action2Link,
+        text: this.data.action2Text
+      };
     }
   }
 };
 </script>
 
 <style lang="stylus">
-$MQMobile = 1048px
+$MQMobile = 1048px;
 
 .home {
   padding: $navbarHeight 2rem 0;
   max-width: 960px;
   margin: 0px auto;
   display: block;
-  
+
   @media (min-width: $MQMobile) {
     padding-top: 80px;
   }
@@ -77,36 +89,43 @@ $MQMobile = 1048px
       margin: 1.8rem auto;
     }
 
+    .button-warp {
+      p {
+        margin: 15px;
+        display: inline-block;
+
+        .action-button {
+          outline: none;
+          position: relative;
+          display: inline-block;
+          font-size: 1.2rem;
+          color: #fff;
+          background-color: $accentColor;
+          padding: 0.7rem 1.6rem;
+          border-radius: 4px;
+          transition: background-color 0.1s ease;
+          box-sizing: border-box;
+          // border-bottom: 1px solid darken($accentColor, 10%);
+          box-shadow: 0 6px darken($accentColor, 10%);
+          transition: box-shadow 0.2s;
+
+          &:hover {
+            background-color: lighten($accentColor, 10%);
+            box-shadow: 0 2px darken($accentColor, 10%);
+          }
+
+          &:active {
+            background-color: darken($accentColor, 10%);
+          }
+        }
+      }
+    }
+
     .description {
       max-width: 35rem;
       font-size: 1.6rem;
       line-height: 1.3;
       color: lighten($textColor, 40%);
-    }
-
-    .action-button {
-      outline none;
-      position relative
-      display: inline-block;
-      font-size: 1.2rem;
-      color: #fff;
-      background-color: $accentColor;
-      padding: 0.7rem 1.6rem;
-      border-radius: 4px;
-      transition: background-color 0.1s ease;
-      box-sizing: border-box;
-      // border-bottom: 1px solid darken($accentColor, 10%);
-      box-shadow: 0 6px darken($accentColor, 10%);
-      transition: box-shadow 0.2s;
-
-      &:hover {
-        background-color lighten($accentColor, 10%)
-        box-shadow 0 2px darken($accentColor, 10%)
-      }
-
-      &:active {
-        background-color darken($accentColor, 10%)
-      }
     }
   }
 

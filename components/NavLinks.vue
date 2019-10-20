@@ -6,6 +6,7 @@
     <!-- user links -->
     <div
       class="nav-item"
+      :class="{'important': item.important}"
       v-for="item in userLinks"
       :key="item.link"
     >
@@ -177,6 +178,10 @@ $MQMobile = 1048px
     a
       margin-left 1rem
       margin-right 1rem
+    &.important
+      color #489dc1
+      a
+        font-weight 500 !important
 
   .repo-link
     position relative
