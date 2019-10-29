@@ -1,7 +1,7 @@
 <template>
   <div class="chat-room" v-if="isShow">
     <div class="slide-warp">
-      <button class="btn-slide" @click="isShowAside = true">快捷聊天室</button>
+      <button class="btn-slide" @click="isShowAside = true">{{config.btnName}}</button>
     </div>
     <aside class="aside-card" :class="{'show': isShowAside}">
       <div class="top">
@@ -49,7 +49,7 @@ export default {
   },
 
   mounted() {
-    if (this.$site.themeConfig.chatRoom) {
+    if (this.$site.themeConfig.sidePanel) {
       if (window.document.documentElement.clientWidth > 760) {
         this.isShow = true;
       }
@@ -64,9 +64,10 @@ export default {
      * 解析规则
      */
     parseConfig() {
-      let config = this.$site.themeConfig.chatRoom;
+      let config = this.$site.themeConfig.sidePanel;
       if (!config) return false;
       if (config.title) this.config.title = config.title;
+      if (config.btnName) this.config.btnName = config.btnName;
     },
 
     /**
