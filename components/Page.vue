@@ -30,8 +30,6 @@
     </div>
 
     <slot name="bottom" />
-
-    <div class="comment" id="teadocs_comment" ref="comment" v-if="!!commentIn">评论系统加载中...🚀</div>
   </main>
 </template>
 
@@ -39,29 +37,11 @@
 import {
   resolvePage,
   outboundRE,
-  endingSlashRE,
-  $dom,
-  loadScript
+  endingSlashRE
 } from "../util";
 
 export default {
   props: ["sidebarItems"],
-
-  data() {
-    return {
-      commentIn: undefined
-    };
-  },
-
-  mounted() {
-    this.initComment();
-  },
-
-  watch: {
-    $route() {
-      this.initComment();
-    }
-  },
 
   computed: {
     lastUpdated() {
@@ -157,34 +137,6 @@ export default {
         (docsDir ? docsDir.replace(endingSlashRE, "") + "/" : "") +
         path
       );
-    },
-
-    /**
-     * 初始化留言系统
-     */
-    initComment() {
-      let commentConfig = this.$site.themeConfig.comment;
-      if (commentConfig && commentConfig.enable === true) {
-        loadScript("https://unpkg.com/valine@latest/dist/Valine.min.js", () => {
-          this.commentIn = undefined;
-          if (document.querySelector("#teadocs_comment")) {
-            document.querySelector("#teadocs_comment").innerHTML = "";
-          }
-          this.commentIn = new Valine({
-            el: "#teadocs_comment",
-            appId: "cgJ5GOhJuv3gtBvk2cx2HkrG-gzGzoHsz",
-            appKey: "aocVRNRoq5fmjBX0flrBl3ph",
-            placeholder:
-              "评论系统试运行，你的评论可能随时会被删除，有任何建议和Bug欢迎留言反馈。👏"
-          });
-          $dom(".power.txt-right", el => {
-            el.parentNode.removeChild(el);
-          });
-          $dom(".v .vlist .vcard .vhead", el => {
-            el.style.textAlign = "left";
-          });
-        });
-      }
     }
   }
 };
@@ -227,11 +179,6 @@ $MQMobile = 1048px;
 .page {
   padding-bottom: 2rem;
   display: block;
-
-  .comment {
-    padding: 2rem 2.2rem;
-    box-sizing: border-box;
-  }
 }
 
 .page-edit {
@@ -293,14 +240,6 @@ $MQMobile = 1048px;
       font-size: 0.8em;
       float: none;
       text-align: left;
-    }
-  }
-}
-
-@media (max-width: $MQMobile) {
-  .page {
-    .comment {
-      display: none;
     }
   }
 }
