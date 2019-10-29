@@ -70,12 +70,12 @@
       </Page>
     </div>
     <alert></alert>
-    <chat-room></chat-room>
+    <side-panel v-if="sidePanelConf.enable === true"></side-panel>
   </div>
 </template>
 
 <script>
-import chatRoom from '@theme/components/chatRoom.vue'
+import sidePanel from '@theme/components/sidePanel.vue'
 import Home from '@theme/components/Home.vue'
 import Navbar from '@theme/components/Navbar.vue'
 import Page from '@theme/components/Page.vue'
@@ -94,7 +94,7 @@ export default {
     Navbar,
     AlgoliaSearchBox,
     SearchBox,
-    chatRoom
+    sidePanel
   },
 
   data () {
@@ -105,6 +105,12 @@ export default {
   },
 
   computed: {
+
+    sidePanelConf () {
+      return this.$site.themeConfig.sidePanel || {
+        enable: false
+      }
+    },
 
     shouldShowNavbar () {
       const { themeConfig } = this.$site
