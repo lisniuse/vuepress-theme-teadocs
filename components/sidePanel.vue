@@ -1,5 +1,5 @@
 <template>
-  <div class="chat-room" v-if="isShow">
+  <div class="side-panel" v-if="isShow">
     <div class="slide-warp">
       <button class="btn-slide" @click="isShowAside = true">{{config.btnName}}</button>
     </div>
@@ -97,7 +97,9 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.chat-room {
+$MQMobile = 1048px
+
+.side-panel {
   .slide-warp {
     position: fixed;
     right: 0px;
@@ -213,6 +215,12 @@ export default {
       font-style: 18px;
       color: #aeaeae;
     }
+  }
+}
+
+@media (max-width: $MQMobile) {
+  .side-panel {
+    display none
   }
 }
 </style>
