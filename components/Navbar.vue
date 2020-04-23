@@ -7,16 +7,17 @@
         class="home-link"
       >
         <img
+          v-if="$site.themeConfig && $site.themeConfig.logo"
           class="logo"
-          :src="$withBase($site.themeConfig.logo.image)"
+          :src="$withBase($site.themeConfig.logo.image || '')"
           :alt="$site.themeConfig.logo.text"
         >
         <span
           ref="siteName"
           class="site-name"
-          v-if="$site.themeConfig.logo.text"
+          v-if="$site.themeConfig && $site.themeConfig.logo && $site.themeConfig.logo.text"
         >{{ $site.themeConfig.logo.text }}</span>
-        <span class="sub-text" v-if="$site.themeConfig.logo.subText">
+        <span class="sub-text" v-if="$site.themeConfig && $site.themeConfig.logo && $site.themeConfig.logo.subText">
           {{ $site.themeConfig.logo.subText }}
         </span>
       </router-link>
@@ -34,13 +35,19 @@
 </template>
 
 <script>
-import AlgoliaSearchBox from '@AlgoliaSearchBox'
+import AlgoliaSearchBox from '@theme/components/AlgoliaSearchBox'
 import SearchBox from '@SearchBox'
 import SidebarButton from '@theme/components/SidebarButton.vue'
 import NavLinks from '@theme/components/NavLinks.vue'
-import { setTimeout } from 'timers';
 
 const MOBILE_DESKTOP_BREAKPOINT = 1048 // refer to config.styl
+
+function css (el, property) {
+  // NOTE: Known bug, will return 'auto' if style value is 'auto'
+  const win = el.ownerDocument.defaultView
+  // null means not to return pseudo styles
+  return win.getComputedStyle(el, null)[property]
+}
 
 export default {
   components: { SidebarButton, NavLinks, SearchBox, AlgoliaSearchBox },
@@ -112,12 +119,6 @@ export default {
   }
 }
 
-function css (el, property) {
-  // NOTE: Known bug, will return 'auto' if style value is 'auto'
-  const win = el.ownerDocument.defaultView
-  // null means not to return pseudo styles
-  return win.getComputedStyle(el, null)[property]
-}
 </script>
 
 <style lang="stylus">
@@ -181,7 +182,7 @@ $MQMobile = 1048px
     box-sizing border-box
     white-space nowrap
     font-size 0.9rem
-    float left
+    float right
     right $navbar-horizontal-padding
     top $navbar-vertical-padding
     display block
