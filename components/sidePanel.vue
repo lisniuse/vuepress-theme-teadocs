@@ -74,7 +74,7 @@ export default {
      * 获取访问数据
      */
     getCount() {
-      let url = `https://analysis.numpy.org.cn/count?sourceUrl=${encodeURIComponent(
+      let url = `https://analytics.numpy.org.cn/count?sourceUrl=${encodeURIComponent(
         window.location.href
       )}`;
       request(
