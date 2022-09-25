@@ -1,6 +1,6 @@
 {
   "name": "vuepress-theme-teadocs",
-  "version": "2.0.0-beta.51",
+  "version": "2.0.0-beta.53",
   "description": "Default theme of VuePress",
   "keywords": [
     "vuepress-theme",
@@ -61,6 +61,10 @@
     "sass": "^1.54.5",
     "vue": "^3.2.37",
     "vue-router": "^4.1.4"
+  },
+  "devDependencies": {
+    "cpx": "^1.5.0",
+    "tsconfig-vuepress": "^4.0.0"
   },
   "peerDependencies": {
     "sass-loader": "^13.0.2"

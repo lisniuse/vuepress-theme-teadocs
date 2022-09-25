@@ -1,5 +1,5 @@
 {
-  "extends": "tsconfig-vuepress/base.json",
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "lib": ["DOM", "ES2020"],
